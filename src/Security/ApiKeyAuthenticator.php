@@ -3,8 +3,6 @@
 namespace App\Security;
 
 use App\Entity\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -28,8 +25,8 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
      * to be skipped.
      */
     public function __construct(
-        protected UserProviderInterface $userProvider,
         protected ParameterBagInterface $parameterBag,
+        protected JwtService $jwtService,
     ) {
     }
 
@@ -52,12 +49,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('empty token!!');
         }
 
-        if ($token) {
-            $decodedValue = JWT::decode(
-                $token,
-                new Key(file_get_contents($this->parameterBag->get('jwt_public_key_path')), 'RS256')
-            );
-        }
+        $decodedValue = $this->jwtService->decodeToken($token);
 
         $user = $decodedValue->email ?? null;
         if (!$user) {
