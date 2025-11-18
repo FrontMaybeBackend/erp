@@ -12,7 +12,7 @@ class JwtManager
             ->withValue($token)
             ->withHttpOnly(true)
             ->withSecure(false)
-            ->withSameSite('Lax')
+            ->withSameSite('lax')
             ->withPath('/')
             ->withExpires(time() + 3600);
     }
@@ -23,7 +23,7 @@ class JwtManager
             ->withValue('')
             ->withHttpOnly(true)
             ->withSecure(false)
-            ->withSameSite('Lax')
+            ->withSameSite('lax')
             ->withPath('/')
             ->withExpires(1);
     }

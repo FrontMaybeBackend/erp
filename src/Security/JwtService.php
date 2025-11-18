@@ -12,7 +12,7 @@ class JwtService
     {
     }
 
-    public function generateToken(string $email, int $ttl = 3600)
+    public function generateToken(string $email, int $ttl = 3600): string
     {
         $privateKey = file_get_contents($this->parameterBag->get('jwt_private_key_path'));
 
@@ -26,7 +26,7 @@ class JwtService
         );
     }
 
-    public function decodeToken(string $token)
+    public function decodeToken(string $token): \stdClass
     {
         return JWT::decode(
             $token,

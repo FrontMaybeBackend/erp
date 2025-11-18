@@ -12,16 +12,17 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class RegisterController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function index(Request $request, UserService $userService, ObjectMapperInterface $objectMapper): JsonResponse
-    {
-        $data = json_decode($request->getContent());
-        $dto = $objectMapper->map($data, UserDTO::class);
-        $userService->registerNewUser($dto);
+    /*  #[Route('/register', name: 'app_register')]
+      public function index(Request $request, UserService $userService, ObjectMapperInterface $objectMapper): JsonResponse
+      {
+          $data = json_decode($request->getContent());
+          $dto = $objectMapper->map($data, UserDTO::class);
+          $userService->registerNewUser($dto);
 
-        return $this->json([
-            'message' => 'Register successfully!',
-            'path' => 'src/Controller/RegisterController.php',
-        ]);
-    }
+          return $this->json([
+              'message' => 'Register successfully!',
+              'path' => 'src/Controller/RegisterController.php',
+          ]);
+      }
+    */
 }
